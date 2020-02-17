@@ -1,0 +1,47 @@
+﻿@using ShopAdoWeb.Models
+@model IEnumerable<Good>
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <link href='@Url.Content("~/Content/bootstrap.min.css")' rel="stylesheet" type="text/css" />
+    <script src='@Url.Content("~/Scripts/bootstrap.min.js")'></script>
+    <title>ShowGoods</title>
+</head>
+<body>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Price</th>
+                <th>Count</th>
+                <th>Manufacturer</th>
+                <th>Category</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (Good good in Model)
+            {
+                <tr>
+                    <td>@good.GoodName</td>
+                    <td>@good.Price</td>
+                    <td>@good.GoodCount</td>
+                    <td>@good.ManufacturerId</td>
+                    <td>@good.CategoryId</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <a id="MainContent_ctl00_SomeLinkButton"
+       class="btn btn-danger btn-sm"
+       href="/Category/ShowCategory">Categories</a>
+    <a id="MainContent_ctl00_SomeLinkButton"
+       class="btn btn-warning btn-sm"
+       href="/Manufacturer/ShowManufacturer">Manufacturers</a>
+</body>
+</html>

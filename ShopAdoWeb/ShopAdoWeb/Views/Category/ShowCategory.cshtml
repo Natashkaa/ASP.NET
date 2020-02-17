@@ -1,0 +1,41 @@
+﻿@using ShopAdoWeb.Models
+@model IEnumerable<Category>
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <link href='@Url.Content("~/Content/bootstrap.min.css")' rel="stylesheet" type="text/css" />
+    <script src='@Url.Content("~/Scripts/bootstrap.min.js")'></script>
+    <title>ShowCategory</title>
+</head>
+<body>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (Category cat in Model)
+            {
+                <tr>
+                    <td>@cat.CategoryId</td>
+                    <td>@cat.CategoryName</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <a id="MainContent_ctl00_SomeLinkButton"
+       class="btn btn-danger btn-sm"
+       href="/Good/ShowGoods">Goods</a>
+    <a id="MainContent_ctl00_SomeLinkButton"
+       class="btn btn-warning btn-sm"
+       href="/Manufacturer/ShowManufacturer">Manufacturers</a>
+</body>
+</html>
