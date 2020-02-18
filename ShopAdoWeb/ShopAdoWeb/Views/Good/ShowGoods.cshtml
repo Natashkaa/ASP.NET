@@ -25,16 +25,33 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (Good good in Model)
+            @foreach (Good good in ViewBag.Goods)
             {
-                <tr>
-                    <td>@good.GoodName</td>
-                    <td>@good.Price</td>
-                    <td>@good.GoodCount</td>
-                    <td>@good.ManufacturerId</td>
-                    <td>@good.CategoryId</td>
-                </tr>
-            }
+             <tr>
+                <td>@good.GoodName</td>
+                <td>@good.Price</td>
+                <td>@good.GoodCount</td>
+                @if (@good.ManufacturerId == null)
+                {
+                    <td>-</td>
+                }
+                else
+                {
+                    <td>@good.Manufacturer.ManufacturerName</td>
+                }
+                @if (@good.CategoryId == null)
+                {
+                    <td>-</td>
+                }
+                else
+                {
+                    <td>@good.Category.CategoryName</td>
+                }
+                <td>
+                    <a href="/Good/Delete/@good.GoodId" class="btn btn-danger">Delete</a>
+                </td>
+             </tr>
+             }
         </tbody>
     </table>
     <a id="MainContent_ctl00_SomeLinkButton"
@@ -43,5 +60,18 @@
     <a id="MainContent_ctl00_SomeLinkButton"
        class="btn btn-warning btn-sm"
        href="/Manufacturer/ShowManufacturer">Manufacturers</a>
+
+    <div class="mt-2">
+        @Html.ActionLink("<", "ShowGoods", "Good", new { id = ViewBag.IncrDecr - 1 }, new { @class = "btn btn-lg btn-info mr-1" })
+        @for (int i = 0; i < (int)ViewBag.PageCount; i++)
+        {
+            @Html.ActionLink((i+1).ToString(),
+                               "ShowGoods",
+                               "Good",
+                               new { id = i + 1 },
+                               new { @class = "btn btn-lg btn-success mr-1"})
+        }
+        @Html.ActionLink(">", "ShowGoods", "Good", new { id = ViewBag.IncrDecr + 1 }, new { @class = "btn btn-lg btn-info mr-1" })
+    </div>
 </body>
 </html>
