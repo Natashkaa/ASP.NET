@@ -1,0 +1,30 @@
+﻿@using ShopAdoWeb.Models
+@model IEnumerable<Good>
+
+@foreach (Good good in ViewBag.Goods)
+{
+    <tr>
+        <td>@good.GoodName</td>
+        <td>@good.Price</td>
+        <td>@good.GoodCount</td>
+        @if (@good.ManufacturerId == null)
+        {
+            <td>-</td>
+        }
+        else
+        {
+            <td>@good.Manufacturer.ManufacturerName</td>
+        }
+        @if (@good.CategoryId == null)
+        {
+            <td>-</td>
+        }
+        else
+        {
+            <td>@good.Category.CategoryName</td>
+        }
+        <td>
+            <a href="/Good/Delete/@good.GoodId" class="btn btn-danger">Delete</a>
+        </td>
+    </tr>
+}

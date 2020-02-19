@@ -2,6 +2,10 @@
 @model IEnumerable<Good>
 @{
     Layout = null;
+    var ajaxOption = new AjaxOptions
+    {
+        UpdateTargetId = "goodTabel"
+    };
 }
 
 <!DOCTYPE html>
@@ -9,7 +13,10 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
+    <link href='@Url.Content("~/Content/MyCss.css")' rel="stylesheet" type="text/css" />
     <link href='@Url.Content("~/Content/bootstrap.min.css")' rel="stylesheet" type="text/css" />
+    
+    <script src="~/Scripts/jquery-3.0.0.min.js"></script>
     <script src='@Url.Content("~/Scripts/bootstrap.min.js")'></script>
     <title>ShowGoods</title>
 </head>
@@ -24,34 +31,11 @@
                 <th>Category</th>
             </tr>
         </thead>
-        <tbody>
-            @foreach (Good good in ViewBag.Goods)
-            {
-             <tr>
-                <td>@good.GoodName</td>
-                <td>@good.Price</td>
-                <td>@good.GoodCount</td>
-                @if (@good.ManufacturerId == null)
-                {
-                    <td>-</td>
-                }
-                else
-                {
-                    <td>@good.Manufacturer.ManufacturerName</td>
-                }
-                @if (@good.CategoryId == null)
-                {
-                    <td>-</td>
-                }
-                else
-                {
-                    <td>@good.Category.CategoryName</td>
-                }
-                <td>
-                    <a href="/Good/Delete/@good.GoodId" class="btn btn-danger">Delete</a>
-                </td>
-             </tr>
-             }
+
+        <tbody id="goodTable">
+            @{ 
+                Html.RenderAction("GoodTable", new { id = 1 });
+            }
         </tbody>
     </table>
     <a id="MainContent_ctl00_SomeLinkButton"
@@ -61,17 +45,14 @@
        class="btn btn-warning btn-sm"
        href="/Manufacturer/ShowManufacturer">Manufacturers</a>
 
-    <div class="mt-2">
-        @Html.ActionLink("<", "ShowGoods", "Good", new { id = ViewBag.IncrDecr - 1 }, new { @class = "btn btn-lg btn-info mr-1" })
-        @for (int i = 0; i < (int)ViewBag.PageCount; i++)
-        {
-            @Html.ActionLink((i+1).ToString(),
-                               "ShowGoods",
-                               "Good",
-                               new { id = i + 1 },
-                               new { @class = "btn btn-lg btn-success mr-1"})
-        }
-        @Html.ActionLink(">", "ShowGoods", "Good", new { id = ViewBag.IncrDecr + 1 }, new { @class = "btn btn-lg btn-info mr-1" })
+    <div class="mt-2 paging-container">
+        <button class="btn btn-lg btn-info mr-1" id="decr"><</button>
+        <div class="pageNumber mr-1 pt-n3" id="curPageNumber"></div>
+        <button class="btn btn-lg btn-info mr-1" id="inc" data-pageCount=@ViewBag.PageCount>></button>
     </div>
+
+    
+    <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+    <script src="~/Scripts/MyScripts/UpdateGoodTable.js"></script>
 </body>
 </html>

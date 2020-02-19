@@ -25,15 +25,7 @@ namespace ShopAdoWeb.Controllers
             }
 
             ViewBag.IncrDecr = id;
-            var goods = goodDB
-                        .GetAll()
-                         .ToList()
-                          .Skip((id - 1) * Goods_per_page)
-                           .Take(Goods_per_page);
-             ViewBag.Goods = goods;
-            
-           
-            return View(goodDB.GetAll());
+            return View();
         }
         
         public ActionResult Delete(int id)
@@ -43,6 +35,17 @@ namespace ShopAdoWeb.Controllers
             goodDB.Delete(good);
             goodDB.Save();
             return RedirectToAction("ShowGoods");
+        }
+
+        public ActionResult GoodTable(int id = 1)
+        {
+            var goods = goodDB
+                        .GetAll()
+                         .ToList()
+                          .Skip((id - 1) * Goods_per_page)
+                           .Take(Goods_per_page);
+            ViewBag.Goods = goods;
+            return PartialView(goods);
         }
     }
 }
