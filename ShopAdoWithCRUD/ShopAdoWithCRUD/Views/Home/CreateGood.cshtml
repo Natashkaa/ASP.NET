@@ -1,0 +1,43 @@
+﻿@model ShopAdoWithCRUD.Models.GoodVM
+@{
+    ViewBag.Title = "Create Good";
+}
+
+@using (Html.BeginForm("CreateGood", "Home", FormMethod.Post))
+{
+    <div class="kek2">tet</div>
+    @Html.HiddenFor(x => x.Id)
+
+    <div class="form-group">
+        @Html.LabelFor(x => x.GoodName)
+        @Html.EditorFor(x => x.GoodName, new { @class = "kek2" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(x => x.Price)
+        @Html.EditorFor(x => x.Price)
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(x => x.Count)
+        @Html.EditorFor(x => x.Count)
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(x => x.CategoryId)
+        @Html.DropDownListFor(x => x.CategoryId, ViewBag.categoryList as SelectList, new { @class = "form-control" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(x => x.ManufacturerId)
+        @Html.DropDownListFor(x => x.ManufacturerId, ViewBag.manufacturerList as SelectList, new { @class = "form-control" })
+    </div>
+
+    <input type="submit" class="btn btn-dark btn-lg" />
+
+    <a id="MainContent_ctl00_SomeLinkButton"
+       class="btn btn-info btn-sm"
+       href="/Home/ShowGoods">Back</a>
+    <div class="pageNumber mr-1 pt-n3" id="curPageNumber"></div>
+}
+

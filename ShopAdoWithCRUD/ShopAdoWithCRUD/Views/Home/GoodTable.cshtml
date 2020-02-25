@@ -1,0 +1,34 @@
+﻿
+@using Shop_DAL
+@model IEnumerable<Good>
+
+@foreach (Good good in ViewBag.Goods)
+{
+    <tr>
+        <td>@good.GoodName</td>
+        <td>@good.Price</td>
+        <td>@good.GoodCount</td>
+        @if (@good.ManufacturerId == null)
+        {
+            <td>-</td>
+        }
+        else
+        {
+            <td>@good.Manufacturer.ManufacturerName</td>
+        }
+        @if (@good.CategoryId == null)
+        {
+            <td>-</td>
+        }
+        else
+        {
+            <td>@good.Category.CategoryName</td>
+        }
+        <td>
+            <a href="/Home/Delete/@good.GoodId" class="btn btn-danger">Delete</a>
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "EditGood", "Home", new {  id = good.GoodId }, new { @class = "btn btn-info"})
+        </td>
+    </tr>
+}
