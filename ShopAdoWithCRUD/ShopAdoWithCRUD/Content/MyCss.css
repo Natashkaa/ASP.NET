@@ -20,6 +20,12 @@
     font-size: 20px
 }
 
-.kek2 {
-    border: 2px solid green;
+.show-warning-message{
+    color: red;
+}
+.hide-warning-message {
+    display: none
+}
+.warning-border {
+    box-shadow: 0 0 5px rgb(255, 0, 0);
 }

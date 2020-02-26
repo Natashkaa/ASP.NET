@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ShopAdoWithCRUD.Modules;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -13,6 +14,7 @@ namespace ShopAdoWithCRUD
         {
             AreaRegistration.RegisterAllAreas();
             RouteConfig.RegisterRoutes(RouteTable.Routes);
+            DependencyResolver.SetResolver(new MyDependencyResolver());
         }
     }
 }

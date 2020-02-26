@@ -5,22 +5,21 @@
 
 @using (Html.BeginForm("CreateGood", "Home", FormMethod.Post))
 {
-    <div class="kek2">tet</div>
     @Html.HiddenFor(x => x.Id)
 
     <div class="form-group">
-        @Html.LabelFor(x => x.GoodName)
-        @Html.EditorFor(x => x.GoodName, new { @class = "kek2" })
+        @Html.LabelFor(x => x.GoodName)<span class="hide-warning-message ml-5" id="error_GoodName">Name cannot be empty</span><br />
+        @Html.TextBoxFor(x => x.GoodName, new { id = "editGoodName" })
     </div>
 
     <div class="form-group">
-        @Html.LabelFor(x => x.Price)
-        @Html.EditorFor(x => x.Price)
+        @Html.LabelFor(x => x.Price)<span class="hide-warning-message ml-5" id="error_GoodPrice">Price is not valid</span><br />
+        @Html.TextBoxFor(x => x.Price, new { id = "editGoodPrice" })
     </div>
 
     <div class="form-group">
-        @Html.LabelFor(x => x.Count)
-        @Html.EditorFor(x => x.Count)
+        @Html.LabelFor(x => x.Count)<span class="hide-warning-message ml-5" id="error_GoodCount">Count is not valid</span><br />
+        @Html.TextBoxFor(x => x.Count, new { id = "editGoodCount" })
     </div>
 
     <div class="form-group">
@@ -33,11 +32,8 @@
         @Html.DropDownListFor(x => x.ManufacturerId, ViewBag.manufacturerList as SelectList, new { @class = "form-control" })
     </div>
 
-    <input type="submit" class="btn btn-dark btn-lg" />
-
+    <input type="submit" class="btn btn-dark btn-lg" id="save_editgood" />
     <a id="MainContent_ctl00_SomeLinkButton"
        class="btn btn-info btn-sm"
        href="/Home/ShowGoods">Back</a>
-    <div class="pageNumber mr-1 pt-n3" id="curPageNumber"></div>
 }
-

@@ -14,20 +14,27 @@ namespace ShopAdoWithCRUD.Controllers
 {
     public class HomeController : Controller
     {
-        GoodRepository goodDB = new GoodRepository();
-        CategoryRepository categoryRepo = new CategoryRepository();
-        ManufacturerRepository manufacturerRepo = new ManufacturerRepository();
+        IRepository<Good> goodRepo;
+        IRepository<Category> categoryRepo;
+        IRepository<Manufacturer> manufacturerRepo;
+
         const int Goods_per_page = 6;
 
-        public HomeController()
+        public HomeController(IRepository<Good> goodRep,
+                              IRepository<Category> catRep, 
+                              IRepository<Manufacturer> manufRep)
         {
+            this.goodRepo = goodRep;
+            this.categoryRepo = catRep;
+            this.manufacturerRepo = manufRep;
+
             ViewBag.categoryList = new SelectList(categoryRepo.GetAll().ToList(), "CategoryId", "CategoryName");
             ViewBag.manufacturerList = new SelectList(manufacturerRepo.GetAll().ToList(), "ManufacturerId", "ManufacturerName");
         }
         // GET: Good
         public ActionResult ShowGoods(int id = 1)
         {
-            ViewBag.PageCount = Math.Ceiling((decimal)goodDB.GetAll().Count() / Goods_per_page);
+            ViewBag.PageCount = Math.Ceiling((decimal)goodRepo.GetAll().Count() / Goods_per_page);
             if (id > (int)ViewBag.PageCount)
             {
                 id = (int)ViewBag.PageCount;
@@ -43,15 +50,15 @@ namespace ShopAdoWithCRUD.Controllers
 
         public ActionResult Delete(int id)
         {
-            var good = goodDB.GetAll().ToList().Find(x => x.GoodId == id);
-            goodDB.Delete(good);
-            goodDB.Save();
+            var good = goodRepo.GetAll().ToList().Find(x => x.GoodId == id);
+            goodRepo.Delete(good);
+            goodRepo.Save();
             return RedirectToAction("ShowGoods");
         }
 
         public ActionResult GoodTable(int id = 1)
         {
-            var goods = goodDB
+            var goods = goodRepo
                         .GetAll()
                          .ToList()
                           .Skip((id - 1) * Goods_per_page)
@@ -64,7 +71,7 @@ namespace ShopAdoWithCRUD.Controllers
         {
             if (id == 0) return View(new GoodVM());
 
-            var good = goodDB.Get(id);
+            var good = goodRepo.Get(id);
             var goodForEdit = new GoodVM
             {
                 Id = good.GoodId,
@@ -77,7 +84,7 @@ namespace ShopAdoWithCRUD.Controllers
         }
 
         [HttpPost]
-        public ActionResult Edit(GoodVM editedGood)
+        public ActionResult EditGood(GoodVM editedGood)
         {
             if (ModelState.IsValid)
             {
@@ -90,7 +97,7 @@ namespace ShopAdoWithCRUD.Controllers
                     CategoryId = editedGood.CategoryId,
                     ManufacturerId = editedGood.ManufacturerId
                 };
-                goodDB.CreateOrUpdate(good);
+                goodRepo.CreateOrUpdate(good);
             }
             return RedirectToAction("ShowGoods");
         }
@@ -114,7 +121,7 @@ namespace ShopAdoWithCRUD.Controllers
                     CategoryId = newGood.CategoryId,
                     ManufacturerId = newGood.ManufacturerId
                 };
-                goodDB.CreateOrUpdate(good);
+                goodRepo.CreateOrUpdate(good);
             }
             return RedirectToAction("ShowGoods");
         }
