@@ -1,4 +1,5 @@
-﻿using Shop_BLL;
+﻿using Shop.DAL;
+using Shop_BLL;
 using Shop_DAL;
 using Shop_DAL.Context;
 using Shop_DAL.Repository;
@@ -17,19 +18,23 @@ namespace ShopAdoWithCRUD.Controllers
         IRepository<Good> goodRepo;
         IRepository<Category> categoryRepo;
         IRepository<Manufacturer> manufacturerRepo;
+        IRepository<Photo> photoRepo;
 
         const int Goods_per_page = 6;
 
         public HomeController(IRepository<Good> goodRep,
                               IRepository<Category> catRep, 
-                              IRepository<Manufacturer> manufRep)
+                              IRepository<Manufacturer> manufRep, 
+                              IRepository<Photo> photoRep)
         {
             this.goodRepo = goodRep;
             this.categoryRepo = catRep;
             this.manufacturerRepo = manufRep;
+            this.photoRepo = photoRep;
 
             ViewBag.categoryList = new SelectList(categoryRepo.GetAll().ToList(), "CategoryId", "CategoryName");
             ViewBag.manufacturerList = new SelectList(manufacturerRepo.GetAll().ToList(), "ManufacturerId", "ManufacturerName");
+            ViewBag.photoLink = photoRepo.Get(2).PhotoPath;
         }
         // GET: Good
         public ActionResult ShowGoods(int id = 1)
@@ -64,6 +69,23 @@ namespace ShopAdoWithCRUD.Controllers
                           .Skip((id - 1) * Goods_per_page)
                            .Take(Goods_per_page);
             ViewBag.Goods = goods;
+            var photochki = photoRepo.GetAll();
+            foreach (Good g in goods)
+            {
+                g.PhotoCollection = new List<string>();
+                IEnumerable<Photo> test = from s in photochki
+                                          where s.GoodId == g.GoodId
+                                          select  s;
+                if (test.Count() > 0)
+                {
+                    foreach (Photo l in test)
+                    {
+                        g.PhotoCollection.Add(l.PhotoPath);
+                    }
+                }
+                else { g.PhotoCollection.Add("Source/unknown.jpg"); }
+                
+            }
             return PartialView(goods);
         }
 
@@ -109,7 +131,7 @@ namespace ShopAdoWithCRUD.Controllers
         }
 
         [HttpPost]
-        public ActionResult CreateGood(GoodVM newGood)
+        public ActionResult CreateGood(GoodVM newGood, IEnumerable<HttpPostedFileBase> fileUpload)
         {
             if (ModelState.IsValid)
             {

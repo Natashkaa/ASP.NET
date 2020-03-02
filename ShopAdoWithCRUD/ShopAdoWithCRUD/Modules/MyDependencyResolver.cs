@@ -6,6 +6,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Shop_DAL.Repository;
+using Shop.DAL;
 
 namespace ShopAdoWithCRUD.Modules
 {
@@ -19,6 +20,7 @@ namespace ShopAdoWithCRUD.Modules
             kernel.Bind<IRepository<Good>>().To<GoodRepository>();
             kernel.Bind<IRepository<Category>>().To<CategoryRepository>();
             kernel.Bind<IRepository<Manufacturer>>().To<ManufacturerRepository>();
+            kernel.Bind<IRepository<Photo>>().To<PhotoRepository>();
         }
         public object GetService(Type serviceType)
         {

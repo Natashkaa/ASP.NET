@@ -13,35 +13,19 @@
        href="/Home/CreateGood">Create</a>
 </div>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>Name</th>
-            <th>Price</th>
-            <th>Count</th>
-            <th>Manufacturer</th>
-            <th>Category</th>
-            <th>Action 1</th>
-            <th>Action 2</th>
-        </tr>
-    </thead>
-
-    <tbody id="goodTable">
-        @{
-            Html.RenderAction("GoodTable", new { id = 1 });
-        }
-    </tbody>
-</table>
+<div class="test" id="goodTable">
+    @{
+        Html.RenderAction("GoodTable", new { id = 1 });
+    }
+</div>
 @*<a id="MainContent_ctl00_SomeLinkButton"
-   class="btn btn-danger btn-sm"
-   href="/Category/ShowCategory">Categories</a>
-<a id="MainContent_ctl00_SomeLinkButton"
-   class="btn btn-warning btn-sm"
-   href="/Manufacturer/ShowManufacturer">Manufacturers</a>*@
-
+       class="btn btn-danger btn-sm"
+       href="/Category/ShowCategory">Categories</a>
+    <a id="MainContent_ctl00_SomeLinkButton"
+       class="btn btn-warning btn-sm"
+       href="/Manufacturer/ShowManufacturer">Manufacturers</a>*@
 <div class="mt-2 paging-container">
     <button class="btn btn-lg btn-info mr-1" id="decr"><</button>
     <div class="pageNumber mr-1 pt-n3" id="curPageNumber"></div>
     <button class="btn btn-lg btn-info mr-1" id="inc" data-pageCount=@ViewBag.PageCount>></button>
 </div>
-

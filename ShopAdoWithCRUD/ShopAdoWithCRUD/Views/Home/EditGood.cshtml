@@ -23,13 +23,23 @@
     </div>
 
     <div class="form-group">
-        @Html.LabelFor(x => x.CategoryId)
-        @Html.DropDownListFor(x => x.CategoryId, ViewBag.categoryList as SelectList, new { @class = "form-control" })
+        @Html.LabelFor(x => x.CategoryName)
+        @Html.DropDownListFor(x => x.CategoryName, ViewBag.categoryList as SelectList, new { @class = "form-control" })
     </div>
 
     <div class="form-group">
-        @Html.LabelFor(x => x.ManufacturerId)
-        @Html.DropDownListFor(x => x.ManufacturerId, ViewBag.manufacturerList as SelectList, new { @class = "form-control" })
+        @Html.LabelFor(x => x.ManufacturerName)
+        @Html.DropDownListFor(x => x.ManufacturerName, ViewBag.manufacturerList as SelectList, new { @class = "form-control" })
+    </div>
+
+    <div>
+        Add Photos to Goods<br />
+        @using (Html.BeginForm("Upload", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+            <input type="file" name="fileUpload" multiple /><br />
+
+            <input type="submit" name="Submit" id="SubmitSingle" value="Upload" />
+        }
     </div>
 
     <input type="submit" class="btn btn-dark btn-lg" id="save_editgood" />

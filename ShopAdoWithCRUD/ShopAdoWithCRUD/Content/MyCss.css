@@ -4,8 +4,14 @@
     vertical-align: central
 }
 
-.table {
-    height: 450px
+
+
+.test {
+    display: inline-flex;
+    flex-wrap: wrap
+}
+.card{
+    width: 400px !important
 }
 
 .pageNumber {

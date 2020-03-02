@@ -4,6 +4,7 @@ namespace Shop_DAL.Context
     using System.Data.Entity;
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Linq;
+    using Shop.DAL;
 
     public partial class ShopAdoEntities : DbContext
     {
@@ -15,6 +16,7 @@ namespace Shop_DAL.Context
         public virtual DbSet<Category> Category { get; set; }
         public virtual DbSet<Good> Good { get; set; }
         public virtual DbSet<Manufacturer> Manufacturer { get; set; }
+        public virtual DbSet<Photo> Photo { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

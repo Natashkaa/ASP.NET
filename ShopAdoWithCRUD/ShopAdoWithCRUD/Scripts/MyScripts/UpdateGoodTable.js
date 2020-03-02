@@ -1,4 +1,10 @@
-﻿var currentPage = 1;
+﻿$('.carousel').carousel({
+    interval: 2000
+})
+
+
+
+var currentPage = 1;
 var PageCount = $('#inc').data("pagecount");
 
 $('#curPageNumber').text(currentPage);

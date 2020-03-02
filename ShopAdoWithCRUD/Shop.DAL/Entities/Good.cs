@@ -1,5 +1,6 @@
 namespace Shop_DAL
 {
+    using Shop.DAL;
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
@@ -28,5 +29,7 @@ namespace Shop_DAL
         public virtual Category Category { get; set; }
 
         public virtual Manufacturer Manufacturer { get; set; }
+
+        public List<string> PhotoCollection { get; set; }
     }
 }

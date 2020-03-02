@@ -64,10 +64,12 @@
     <Compile Include="Entities\Manufacturer.cs" />
     <Compile Include="Interface\IRepository.cs" />
     <Compile Include="Interface\IUnitOfWork.cs" />
+    <Compile Include="Entities\Photo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository\CategoryRepository.cs" />
     <Compile Include="Repository\GoodRepository.cs" />
     <Compile Include="Repository\ManufacturerRepository.cs" />
+    <Compile Include="Repository\PhotoRepository.cs" />
     <Compile Include="UnitOfWork\ProductUnitOfWork.cs" />
   </ItemGroup>
   <ItemGroup>
