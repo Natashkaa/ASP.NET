@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Shop.DAL
+namespace Shop_DAL
 {
     public class PhotoRepository : BaseRepository<Photo>
     {

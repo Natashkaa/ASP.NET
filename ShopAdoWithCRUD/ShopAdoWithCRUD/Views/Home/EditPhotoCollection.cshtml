@@ -1,0 +1,14 @@
+﻿@using Shop_DAL
+@model IEnumerable<Photo>
+
+@foreach (Photo s in ViewBag.photos)
+{
+<div>
+    <img class="good-image-for-edit" src="~/@s.PhotoPath" alt="..." data-photoId="@s.PhotoId">
+    <a id="MainContent_ctl00_SomeLinkButton"
+       class="btn btn-warning btn-sm"
+       href="/Home/DeleteImage/@(s.PhotoId)"> Delete Picture</a>
+</div>
+
+
+}

@@ -3,9 +3,9 @@
     ViewBag.Title = "Edit Good";
 }
 
-@using (Html.BeginForm("EditGood", "Home", FormMethod.Post))
+@using (Html.BeginForm("EditGood", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
-    @Html.HiddenFor(x => x.Id)
+    @Html.HiddenFor(x => x.Id, new { id = "editGoodId" })
 
     <div class="form-group">
         @Html.LabelFor(x => x.GoodName)<span class="hide-warning-message ml-5" id="error_GoodName">Name cannot be empty</span><br />
@@ -23,26 +23,28 @@
     </div>
 
     <div class="form-group">
-        @Html.LabelFor(x => x.CategoryName)
-        @Html.DropDownListFor(x => x.CategoryName, ViewBag.categoryList as SelectList, new { @class = "form-control" })
+        @Html.LabelFor(x => x.CategoryId, "Caregory")
+        @Html.DropDownListFor(x => x.CategoryId, ViewBag.categoryList as SelectList, new { @class = "form-control" })
     </div>
 
     <div class="form-group">
-        @Html.LabelFor(x => x.ManufacturerName)
-        @Html.DropDownListFor(x => x.ManufacturerName, ViewBag.manufacturerList as SelectList, new { @class = "form-control" })
+        @Html.LabelFor(x => x.ManufacturerId, "Manufacturer")
+        @Html.DropDownListFor(x => x.ManufacturerId, ViewBag.manufacturerList as SelectList, new { @class = "form-control" })
     </div>
 
-    <div>
-        Add Photos to Goods<br />
-        @using (Html.BeginForm("Upload", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
-        {
-            <input type="file" name="fileUpload" multiple /><br />
-
-            <input type="submit" name="Submit" id="SubmitSingle" value="Upload" />
+    <div class="edit-img-container">
+        @{
+            Html.RenderAction("EditPhotoCollection", new { good = Model });
         }
+
+        <div>
+            Add Photos to Goods<br />
+            <input type="file" name="fileUpload" id="download_photos" multiple /><br />
+        </div>
     </div>
 
-    <input type="submit" class="btn btn-dark btn-lg" id="save_editgood" />
+
+    <input type="submit" class="btn btn-dark btn-lg save-changes" id="save_editgood" />
     <a id="MainContent_ctl00_SomeLinkButton"
        class="btn btn-info btn-sm"
        href="/Home/ShowGoods">Back</a>

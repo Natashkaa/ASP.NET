@@ -1,4 +1,4 @@
-namespace Shop.DAL
+namespace Shop_DAL
 {
     using System;
     using System.Collections.Generic;

@@ -17,5 +17,6 @@ namespace ShopAdoWithCRUD.Models
         public string ManufacturerName { get; set; }
         public decimal Price { get; set; }
         public decimal Count { get; set; }
+        public List<string> ImagePath { get; set; }
     }
 }

@@ -1,5 +1,5 @@
 ﻿$('.carousel').carousel({
-    interval: 2000
+    interval: 0
 })
 
 
@@ -73,4 +73,17 @@ $('#save_editgood').click(function (e) {
         $('#error_GoodCount').addClass('show-warning-message');//show error
         e.preventDefault();
     }
+    
 });
+
+$('.good-image-for-edit').each(function () {
+    let regExp = /\//ig;
+    $(this).on('dblclick', function () {
+        //let imgEl = this;
+        //let photoId = imgEl.attributes[3].value;
+        //if (photoId > 0) {
+        //    fetch(`/Home/DeleteImage/${photoId}}`);
+        //}
+        this.style.display = "none";
+    })
+})

@@ -6,7 +6,6 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Shop_DAL.Repository;
-using Shop.DAL;
 
 namespace ShopAdoWithCRUD.Modules
 {

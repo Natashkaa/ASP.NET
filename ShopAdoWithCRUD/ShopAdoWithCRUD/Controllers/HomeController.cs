@@ -1,5 +1,4 @@
-﻿using Shop.DAL;
-using Shop_BLL;
+﻿using Shop_BLL;
 using Shop_DAL;
 using Shop_DAL.Context;
 using Shop_DAL.Repository;
@@ -32,9 +31,8 @@ namespace ShopAdoWithCRUD.Controllers
             this.manufacturerRepo = manufRep;
             this.photoRepo = photoRep;
 
-            ViewBag.categoryList = new SelectList(categoryRepo.GetAll().ToList(), "CategoryId", "CategoryName");
-            ViewBag.manufacturerList = new SelectList(manufacturerRepo.GetAll().ToList(), "ManufacturerId", "ManufacturerName");
-            ViewBag.photoLink = photoRepo.Get(2).PhotoPath;
+            ViewBag.categoryList = new SelectList(categoryRepo.GetAll().ToList().OrderBy(category => category.CategoryName), "CategoryId", "CategoryName");
+            ViewBag.manufacturerList = new SelectList(manufacturerRepo.GetAll().ToList().OrderBy(manuf => manuf.ManufacturerName), "ManufacturerId", "ManufacturerName");
         }
         // GET: Good
         public ActionResult ShowGoods(int id = 1)
@@ -52,7 +50,7 @@ namespace ShopAdoWithCRUD.Controllers
             ViewBag.IncrDecr = id;
             return View();
         }
-
+        
         public ActionResult Delete(int id)
         {
             var good = goodRepo.GetAll().ToList().Find(x => x.GoodId == id);
@@ -84,30 +82,53 @@ namespace ShopAdoWithCRUD.Controllers
                     }
                 }
                 else { g.PhotoCollection.Add("Source/unknown.jpg"); }
-                
             }
             return PartialView(goods);
         }
 
+        public ActionResult EditPhotoCollection(GoodVM good)
+        {
+            IEnumerable<Photo> pho = from s in photoRepo.GetAll()
+                                      where s.GoodId == good.Id
+                                      select s;
+            ViewBag.photos = pho;
+            return PartialView();
+        }
         public ActionResult EditGood(int id = 0)
         {
             if (id == 0) return View(new GoodVM());
 
             var good = goodRepo.Get(id);
+            IEnumerable<Photo> imgs = from s in photoRepo.GetAll()
+                                      where s.GoodId == good.GoodId
+                                      select s;
+            ViewBag.GoodImagesForEdit = imgs.ToList();
+
             var goodForEdit = new GoodVM
             {
                 Id = good.GoodId,
                 GoodName = good.GoodName,
                 Price = good.Price,
-                Count = good.GoodCount
+                Count = good.GoodCount,
+                CategoryId = good?.CategoryId,
+                ManufacturerId = good?.ManufacturerId
             };
 
             return View(goodForEdit);
         }
 
         [HttpPost]
-        public ActionResult EditGood(GoodVM editedGood)
+        public ActionResult EditGood(GoodVM editedGood, IEnumerable<HttpPostedFileBase> fileUpload)
         {
+            //foreach (string file in Request.Files)
+            //{
+            //    HttpPostedFileBase hpf = Request.Files[file] as HttpPostedFileBase;
+            //    if (hpf.ContentLength > 0)
+            //    {
+            //        string savedFileName = Server.MapPath("~/Source/" + hpf.FileName);
+            //        hpf.SaveAs(savedFileName);
+            //    }
+            //}
             if (ModelState.IsValid)
             {
                 Good good = new Good
@@ -117,11 +138,40 @@ namespace ShopAdoWithCRUD.Controllers
                     Price = editedGood.Price,
                     GoodCount = editedGood.Count,
                     CategoryId = editedGood.CategoryId,
-                    ManufacturerId = editedGood.ManufacturerId
+                    ManufacturerId = editedGood.ManufacturerId,
+                    PhotoCollection = editedGood.ImagePath
                 };
+                
+                if (fileUpload.Count() > 0)
+                {
+                    foreach (HttpPostedFileBase f in fileUpload)
+                    {
+                        if (f != null)
+                        {
+                        //    p.GoodId = good.GoodId;
+                        //    p.PhotoPath = $"Source/{f.FileName}";
+                            Photo kek = new Photo
+                            {
+                                PhotoId = 0,
+                                GoodId = good.GoodId,
+                                PhotoPath = $"Source/{f.FileName}"
+                            };
+                            string savedFileName = Server.MapPath("~/Source/" + f.FileName);
+                            f.SaveAs(savedFileName);
+                            photoRepo.CreateOrUpdate(kek);
+                        }
+                    }
+                }
                 goodRepo.CreateOrUpdate(good);
             }
             return RedirectToAction("ShowGoods");
+        }
+        public ActionResult DeleteImage(int id )
+        {
+            Photo photo = photoRepo.Get(id);
+            photoRepo.Delete(photo);
+            photoRepo.Save();
+            return Redirect($"~/Home/EditGood/{photo.GoodId}");
         }
 
         public ActionResult CreateGood()
@@ -131,7 +181,7 @@ namespace ShopAdoWithCRUD.Controllers
         }
 
         [HttpPost]
-        public ActionResult CreateGood(GoodVM newGood, IEnumerable<HttpPostedFileBase> fileUpload)
+        public ActionResult CreateGood(GoodVM newGood)//new photos
         {
             if (ModelState.IsValid)
             {
