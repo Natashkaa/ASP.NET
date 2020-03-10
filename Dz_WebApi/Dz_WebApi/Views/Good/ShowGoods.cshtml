@@ -1,0 +1,54 @@
+﻿@using ShopAdoDAL.Entity
+@model IEnumerable<Good>
+@{
+    ViewBag.Title = "Good";
+    var ajaxOption = new AjaxOptions
+    {
+        UpdateTargetId = "goodTabel"
+    };
+}
+
+<h2>Goods</h2>
+
+<div id="data">
+    @*@{
+        Html.RenderAction("GoodCard", new { id = 1});
+    }*@
+</div>
+<div class="mt-2 paging-container">
+    <button class="btn btn-lg btn-info mr-1" id="decr"><</button>
+    <div class="pageNumber mr-1 pt-n3" id="curPageNumber"></div>
+    <button class="btn btn-lg btn-info mr-1" id="inc" data-pageCount=@ViewBag.PageCount>></button>
+</div>
+
+
+@section Scripts
+{
+    <script type="text/javascript">
+
+        //$(function () {
+        //    $('#data').load('/api/Good');
+        //});
+
+
+
+		$(function () {
+            $.getJSON('@Url.RouteUrl("DefaultApi",new {httproute="",controller="Good" })',
+                function(data)
+                {
+                    // Looping through  JSONs
+                    $.each(data, function (i, object) {
+
+                        $('#productsSet').append('<ul ' + 'class=list-group' + '>' + '<strong>'
+                            + object.GoodName + '</strong>');
+                        // Looping through properties of current JSON
+                         $.each(object, function (index, obj) {
+                             $('#productsSet').append('<li '+'class=list-group-item'+'>' + obj+'</li>');
+                         });
+                    });
+                    $('#productsSet').append('</ul>');
+                }
+            )
+        });
+    </script>
+}
