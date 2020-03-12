@@ -8,6 +8,7 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Description;
+using ShopAdoDAL;
 using ShopAdoDAL.Context;
 using ShopAdoDAL.Entity;
 
@@ -21,37 +22,40 @@ namespace Dz_WebApi.Controllers.API
         {
             db.Configuration.ProxyCreationEnabled = false;
         }
-        // GET: api/Goods
-        public IEnumerable<Good> GetGood()
+        // GET: api/Good
+        public HttpResponseMessage GetAllGoods()
         {
-            return db.Good.ToList();
+            IEnumerable<Good> allGoods = db.Good;
+            if (allGoods == null)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.NoContent, "Good DB is empty");
+            }
+            return Request.CreateResponse(HttpStatusCode.OK, allGoods);
         }
 
-        // GET: api/Goods/5
-        [ResponseType(typeof(Good))]
-        public IHttpActionResult GetGood(int id)
+        // GET: api/Good/5
+        public HttpResponseMessage GetGood(int id)
         {
             Good good = db.Good.Find(id);
             if (good == null)
             {
-                return NotFound();
+                return Request.CreateErrorResponse(HttpStatusCode.NotFound, $"Requested good with id {id} doesn’t exist in database");
             }
 
-            return Ok(good);
+            return Request.CreateResponse(HttpStatusCode.OK, good);
         }
 
-        // PUT: api/Goods/5
-        [ResponseType(typeof(void))]
-        public IHttpActionResult PutGood(int id, Good good)
+        // PUT: api/Good/5
+        public HttpResponseMessage PutGood(int id, Good good)
         {
             if (!ModelState.IsValid)
             {
-                return BadRequest(ModelState);
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ModelState);
             }
 
             if (id != good.GoodId)
             {
-                return BadRequest();
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Ids does not match");
             }
 
             db.Entry(good).State = EntityState.Modified;
@@ -62,50 +66,65 @@ namespace Dz_WebApi.Controllers.API
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!GoodExists(id))
-                {
-                    return NotFound();
+                if (!GoodExists(id)) {
+                    return Request.CreateErrorResponse(HttpStatusCode.NotFound, $"Good with id {id} does not exist in database");
                 }
-                else
-                {
-                    throw;
-                }
+                else { throw; }
             }
-
-            return StatusCode(HttpStatusCode.NoContent);
+            return Request.CreateResponse(HttpStatusCode.NoContent);
         }
 
-        // POST: api/Goods
-        [ResponseType(typeof(Good))]
-        public IHttpActionResult PostGood(Good good)
+        // POST: api/Good
+        public HttpResponseMessage PostGood(Good good)
         {
             if (!ModelState.IsValid)
             {
-                return BadRequest(ModelState);
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ModelState);
             }
 
             db.Good.Add(good);
             db.SaveChanges();
 
-            return CreatedAtRoute("DefaultApi", new { id = good.GoodId }, good);
+            //return CreatedAtRoute("DefaultApi", new { id = good.GoodId }, good);
+            return Request.CreateResponse(HttpStatusCode.OK, good);
         }
 
-        // DELETE: api/Goods/5
-        [ResponseType(typeof(Good))]
-        public IHttpActionResult DeleteGood(int id)
+        // DELETE: api/Good/5
+        public HttpResponseMessage DeleteGood(int id)
         {
             Good good = db.Good.Find(id);
             if (good == null)
             {
-                return NotFound();
+                return Request.CreateErrorResponse(HttpStatusCode.NotFound, $"Requested good with id {id} doesn’t exist in database");
             }
 
             db.Good.Remove(good);
             db.SaveChanges();
 
-            return Ok(good);
+            return Request.CreateResponse(HttpStatusCode.OK, good);
         }
 
+        //POST: api/Good/Categories/1
+        [ActionName("Categories")]
+        public IEnumerable<Good> Categories(int id)
+        {
+            IEnumerable<Good> goods = from x in db.Good
+                                      where x.CategoryId == id
+                                      select x;
+            return goods;
+        }
+        
+        //POST: api/Good/Manufacturers/1
+        [ActionName("Manufacturers")]
+        public IEnumerable<Good> Manufacturers(int id)
+        {
+            IEnumerable<Good> goods = from x in db.Good
+                                      where x.ManufacturerId == id
+                                      select x;
+
+            return goods;
+        }
+        
         protected override void Dispose(bool disposing)
         {
             if (disposing)

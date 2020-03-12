@@ -1,0 +1,18 @@
+GET http://localhost:60058/api/Good
+##
+# GET http://localhost:60058/api/Good/GetCategories
+# content-type: application/json
+
+# {
+#     "CategoryId" : 3,
+#     "CategoryName" : "Printer"
+# }
+
+
+# GET http://localhost:60058/api/Good/GetManufacturers
+# content-type: application/json
+
+# {
+#     "ManufacturerId" : 4,
+#     "ManufacturerName" : "Huawei"
+# }
