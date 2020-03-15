@@ -148,8 +148,6 @@ namespace ShopAdoWithCRUD.Controllers
                     {
                         if (f != null)
                         {
-                        //    p.GoodId = good.GoodId;
-                        //    p.PhotoPath = $"Source/{f.FileName}";
                             Photo kek = new Photo
                             {
                                 PhotoId = 0,

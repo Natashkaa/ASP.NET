@@ -10,11 +10,14 @@ namespace ShopAdoWithCRUD
 {
     public class MvcApplication : System.Web.HttpApplication
     {
+        GlobalFilterCollection filter = new GlobalFilterCollection();
         protected void Application_Start()
         {
             AreaRegistration.RegisterAllAreas();
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             DependencyResolver.SetResolver(new MyDependencyResolver());
+
+            filter.Add(new HandleErrorAttribute());
         }
     }
 }

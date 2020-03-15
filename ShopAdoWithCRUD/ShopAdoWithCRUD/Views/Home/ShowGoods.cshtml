@@ -7,11 +7,22 @@
         UpdateTargetId = "goodTabel"
     };
 }
-<div class="mt-2 paging-container">
-    <a id="MainContent_ctl00_SomeLinkButton"
-       class="btn btn-dark btn-lg mb-2"
-       href="/Home/CreateGood">Create</a>
-</div>
+
+@if (User.Identity.Name == "Admin")
+{
+    <h3>Hello, @User.Identity.Name</h3>
+    @Html.ActionLink("LogOut", "logout", "authentication")
+    <div class="mt-2 paging-container">
+        <a id="MainContent_ctl00_SomeLinkButton"
+           class="btn btn-dark btn-lg mb-2"
+           href="/Home/CreateGood">Create</a>
+    </div>
+}
+else
+{
+    @Html.ActionLink("LogIn", "login", "authentication")
+}
+
 
 <div id="goodTable">
     @{

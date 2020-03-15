@@ -1,0 +1,23 @@
+﻿@model ShopAdoWithCRUD.Models.UserModel
+@{
+    ViewBag.Title = "Login";
+}
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Login</title>
+</head>
+<body>
+    <center>
+        <h3>LoginPage</h3>
+        @using (Html.BeginForm())
+        {
+            @Html.ValidationSummary(true)
+            @Html.EditorForModel()
+            <input type="submit"/>
+        }
+        @Html.ActionLink("Continue as User", "showgoods", "home")
+    </center>
+</body>
+</html>
